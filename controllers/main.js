@@ -19,26 +19,17 @@ const login = async(req,res)=>{
     res.status(200).json({msg: 'user created',token})
 }
 
+
+
+
 //get-dashboard
 const dashBoard = async(req,res)=>{
-    const authHeader = req.headers.authorization;
-    
-    if(!authHeader || !authHeader.startsWith('Bearer ')){
-        throw new CustomAPIError('No token provided. ',401 )
-    }
-    
-    const token = authHeader.split(' ')[1]
-    console.log(token);
+   console.log(req.user);
 
-    try {
-        const decoded = jwt.verify(token,process.env.JWT_SECRET)
-        const name = decoded.username
-        const luckNumber = Math.floor(Math.random()*100)
-        res.status(200).json({msg:`Hello, ${name}`, secret:`Your authorized data + your number ${luckNumber}`})
-
-    } catch (error) {
-        throw new CustomAPIError('Not authorized to acces this route. ',401 )
-    }
+    const name = req.user.username
+    const luckNumber = Math.floor(Math.random()*1000)
+    res.status(200).json({msg:`Hello, ${name}`, secret:`Your authorized data + your number ${luckNumber}`})
+   
 
    
 }
